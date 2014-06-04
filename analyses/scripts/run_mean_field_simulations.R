@@ -1,5 +1,6 @@
 setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
 attach(read.table("par.txt"))
+par  = read.table("par.txt")
 
 setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/scripts")
 source("get_transitions.R")
@@ -9,9 +10,22 @@ Tgrad = seq(-1,5,0.05)
 reslow = matrix(nr = length(Tgrad), nc = 4)
 reshigh = matrix(nr = length(Tgrad), nc = 4)
 
+res_M = matrix(nr = length(Tgrad), nc = 4)
+
 for(j in 1:length(Tgrad)) {
-	reslow[j,] 	= get_eq(p = c(0.99,0.01,0,0),ENV = Tgrad[j],par)
-	reshigh[j,] = get_eq(p = c(0.01,0.99,0,0),ENV = Tgrad[j],par)
+
+	p0 = get_eq(p = c(1,0.0,0,0),ENV = Tgrad[j],par)
+	p0[2] = 0.001
+	p0[1] = p0[1]-0.001
+	reslow[j,] 	= get_eq(p = p0,ENV = Tgrad[j],par)
+	
+	p0 = get_eq(p = c(0,1,0,0),ENV = Tgrad[j],par)
+	p0[1] = 0.001
+	p0[2] = p0[1]-0.001
+	reshigh[j,] = get_eq(p = p0,ENV = Tgrad[j],par)
+	
+	res_M[j,] = get_eq(p = c(0,1,0,0),ENV = Tgrad[j],par)
+
 }
 
 # Plot the results
