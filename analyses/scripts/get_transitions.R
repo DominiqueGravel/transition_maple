@@ -15,7 +15,9 @@ with(par, {
 	logit_betad 	= bd0 + bd1*ENV + bd2*ENV^2
 	logit_thetac	= tc0 + tc1*ENV + tc2*ENV^2
 	logit_thetad	= td0 + td1*ENV + td2*ENV^2
-	logit_eps 		= e0  + e1*ENV  + e2*ENV^2
+	logit_epsd 	= e0d  + e1d*ENV  + e2d*ENV^2
+	logit_epsc 	= e0c  + e1c*ENV  + e2c*ENV^2
+	logit_epsm 	= e0m  + e1m*ENV  + e2m*ENV^2
 
 	# Back transform into probabilities
 	alphac = exp(logit_alphac)/(1+exp(logit_alphac))
@@ -24,30 +26,29 @@ with(par, {
 	betad = exp(logit_betad)/(1+exp(logit_betad))*(ED+EM)
 	thetac = exp(logit_thetac)/(1+exp(logit_thetac))
 	thetad = exp(logit_thetad)/(1+exp(logit_thetad))
-	eps = exp(logit_eps)/(1+exp(logit_eps))
-	phic = alphac*(EM + EC)*(1-alphad*(ED+EM))
-	phid = alphad*(EM + ED)*(1-alphac*(EC+EM))
-	phim = phic*phid
+	epsd = exp(logit_epsd)/(1+exp(logit_epsd))
+	epsc = exp(logit_epsc)/(1+exp(logit_epsc))
+	epsm = exp(logit_epsm)/(1+exp(logit_epsm))		
 	
 	if(t0 == "C") { 
-		p[1] = (1 - eps - betad)
+		p[1] = (1 - epsc - betad)
 		p[2] = 0
 		p[3] = betad
-		p[4] = eps
+		p[4] = epsc
 	}
 	
 	else if(t0 == "D") { 
 		p[1] = 0
-		p[2] = (1 - eps - betac)
+		p[2] = (1 - epsd - betac)
 		p[3] = betac	
-		p[4] = eps
+		p[4] = epsd
 	}	
 
 	else if(t0 == "M") { 
 		p[1] = thetac
 		p[2] = thetad
-		p[3] = 1 - thetac - thetad - eps
-		p[4] = eps
+		p[3] = 1 - thetac - thetad - epsm
+		p[4] = epsm
 	}	
 
 	else if(t0 == "T") { 
