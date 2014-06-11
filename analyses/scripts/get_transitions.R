@@ -29,7 +29,11 @@ with(par, {
 	epsd = exp(logit_epsd)/(1+exp(logit_epsd))
 	epsc = exp(logit_epsc)/(1+exp(logit_epsc))
 	epsm = exp(logit_epsm)/(1+exp(logit_epsm))		
-	
+
+	phic = alphac*(EM + EC)*(1-alphad*(ED+EM))
+	phid = alphad*(EM + ED)*(1-alphad*(EC+EM))
+	phim = phic*phid
+		
 	if(t0 == "C") { 
 		p[1] = (1 - epsc - betad)
 		p[2] = 0

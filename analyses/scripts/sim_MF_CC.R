@@ -4,7 +4,7 @@ Ecc = ENV0 + 2*c(1:10)/10
 
 # Run climate warming with the SDM model
 # Load data
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
+setwd("/Users/DGravel/Desktop/transition_maple/analyses/data")
 data = as.data.frame(read.table("data_categorical.txt"))
 data$E = data$av_annual_mean_tp
 data$E2 = data$E^2
@@ -18,10 +18,9 @@ p0 = predict(SDM,new=data.frame(E=ENV0,E2=ENV0^2),"probs")
 res_SDM = rbind(p0,res_SDM)
 
 # Run the transition model without climate change
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
 par = read.table("par.txt")
 
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/scripts")
+setwd("/Users/DGravel/Desktop/transition_maple/analyses/scripts")
 source("get_transitions.R")
 
 res_noCC = matrix(nr= 10, nc = 4)
@@ -35,10 +34,10 @@ res_noCC = rbind(p0,res_noCC)
 
 
 # Run climate warming with the transition model
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
+setwd("/Users/DGravel/Desktop/transition_maple/analyses/data")
 par = read.table("par.txt")
 
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/scripts")
+setwd("/Users/DGravel/Desktop/transition_maple/analyses/scripts")
 source("get_transitions.R")
 
 res_CC = matrix(nr= 10, nc = 4)
@@ -51,7 +50,7 @@ for(i in 1:10) {
 res_CC = rbind(p0,res_CC)
 
 # Plot the results
-x11(height = 6, width = 8)
+quartz(height = 6, width = 8)
 par(mar=c(5,5,2,1))
 plot(2000+c(0:10)/0.1,res_CC[,2],type = "l",lwd = 3,xlab = "Année",ylab = "Proportion du paysage",cex.lab = 1.5, cex.axis = 1.25,ylim=c(0.15,0.35),col = "darkred")
 lines(2000+c(0:10)/0.1,res_noCC[,2],lwd = 3)
@@ -60,11 +59,6 @@ lines(2000+c(0:10)/0.1,res_SDM[,2],col = "darkred",lwd = 3,lt=3)
 
 legend("top",bty = "n", col = c("black","darkred","darkred"),legend = c("Transition - No CC","Transition - CC", "SDM - CC"),lty = c(1,1,3),lwd = 3)
 
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/figures")
+setwd("/Users/DGravel/Desktop/transition_maple/analyses/figures")
 dev.copy2pdf(file = "CC_MF.pdf")
-
-
-setwd("/home/DominiqueGravel/Documents/Presentations/2014/talk_BIC")
-dev.copy2pdf(file = "CC_MF.pdf")
-
 

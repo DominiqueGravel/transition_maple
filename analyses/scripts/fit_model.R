@@ -1,5 +1,5 @@
 # Source packages
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/scripts")
+setwd("/Users/DGravel/Desktop/transition_maple/analyses/scripts")
 source("anneal_custom.R")
 source("likeli.R")
 source("analyze_function.R")
@@ -13,7 +13,7 @@ var$lik = "predicted"
 var$EC = "EC"
 var$ED = "ED"
 var$EM = "EM"
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
+setwd("/Users/DGravel/Desktop/transition_maple/analyses/data")
 data = as.data.frame(read.table("data_categorical.txt"))
 test = numeric(nrow(data))
 test[data$t0 == "D" & data$t1 == "C"] = 1
