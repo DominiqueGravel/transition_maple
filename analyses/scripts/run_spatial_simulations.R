@@ -1,16 +1,16 @@
 rm(list=ls())
 
 # Parameters and functions
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
+setwd("/Users/DGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
 par = read.table("par.txt")
 
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/scripts")
+setwd("/Users/DGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/scripts")
 source("get_transitions.R")
 source("spatial_model.R")
 source("plot_map")
 
 # Initial conditions
-setwd("/home/DominiqueGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
+setwd("/Users/DGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
 
 BIC = read.table("state_BIC.txt")
 XY = BIC[,1:2]
@@ -52,7 +52,7 @@ Z = matrix(nr = length(X), nc = length(Y))
 for(x in 1:length(X)) 
 	for(y in 1:length(Y)) 	
 		Z[x,y] = pres_int[XY[,1] == X[x] & XY[,2]==Y[y]]	
-	x11(width = 3, height = 15)
+	quartz(width = 3, height = 15)
 layout(matrix(c(1,2),nr=2,nc=1,byrow=TRUE),heights = c(2,12))
 par(mar=c(0,0,2,0))
 plot(1, type = "n", axes=FALSE, xlab="", ylab="")

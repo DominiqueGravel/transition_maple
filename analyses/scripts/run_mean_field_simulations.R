@@ -1,8 +1,8 @@
-setwd("/Users/DGravel/Desktop/transition_maple/analyses/data")
+setwd("/Users/DGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/data")
 attach(read.table("par.txt"))
 par  = read.table("par.txt")
 
-setwd("/Users/DGravel/Desktop/transition_maple/analyses/scripts")
+setwd("/Users/DGravel/Documents/Projects_On_Going/Maple_migration/transition_maple/analyses/scripts")
 source("get_transitions.R")
 
 # Compute equilibrium for two initial conditions
@@ -16,14 +16,14 @@ for(j in 1:length(Tgrad)) {
 	p0 = get_eq(p = c(1,0.0,0,0),ENV = Tgrad[j],par)
 	p0[2] = 0.001
 	p0[1] = p0[1]-0.001
-	reslow[j,] 	= get_eq(p = p0,ENV = Tgrad[j],par)
+#	reslow[j,] 	= get_eq(p = p0,ENV = Tgrad[j],par)
 	
 	p0 = get_eq(p = c(0,1,0,0),ENV = Tgrad[j],par)
 	p0[1] = 0.001
 	p0[2] = p0[1]-0.001
 	reshigh[j,] = get_eq(p = p0,ENV = Tgrad[j],par)
 	
-	res_M[j,] = get_eq(p = c(0,1,0,0),ENV = Tgrad[j],par)
+#	res_M[j,] = get_eq(p = c(0,1,0,0),ENV = Tgrad[j],par)
 }
 
 # Plot the results
