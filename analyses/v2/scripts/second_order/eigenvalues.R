@@ -1,0 +1,37 @@
+rm(list = ls())
+attach(read.table("par.txt"))
+
+PP = 1.2
+TP = seq(-1,5,0.01) 
+
+# Compute the logit
+logit_alphad 	= ad0 + adt1*TP + adt2*TP^2 + adp1*PP + adp2*PP^2
+logit_alphac 	= ac0 + act1*TP + act2*TP^2 + acp1*PP + acp2*PP^2
+logit_betad		= bd0 + bdt1*TP + bdt2*TP^2 + bdp1*PP + bdp2*PP^2
+logit_betac 	= bc0 + bct1*TP + bct2*TP^2 + bcp1*PP + bcp2*PP^2
+logit_thetad	= td0 + tdt1*TP + tdt2*TP^2 + tdp1*PP + tdp2*PP^2
+logit_thetac	= tc0 + tct1*TP + tct2*TP^2 + tcp1*PP + tcp2*PP^2
+logit_eps 		= e0 + et1*TP + et2*TP^2 + ep1*PP + ep2*PP^2
+
+# Back transform into probabilities
+aC = exp(logit_alphac)/(1+exp(logit_alphac))
+aD = exp(logit_alphad)/(1+exp(logit_alphad))
+bC = exp(logit_betac)/(1+exp(logit_betac))
+bD = exp(logit_betad)/(1+exp(logit_betad))
+sC = exp(logit_thetac)/(1+exp(logit_thetac))
+sD = exp(logit_thetad)/(1+exp(logit_thetad))
+e = exp(logit_eps)/(1+exp(logit_eps))
+
+# Compute the first eigenvalues for C and D as invaders
+invC = 1/2*((aD - e)*bC - (aD - e)*bD + aC*e - 2*aD*e - aD*sC - aD*sD + sqrt(aC^2*e^2 + aD^2*sC^2 + aD^2*sD^2 + (aD^2 - 2*aD*e + e^2)*bC^2 + (aD^2 - 2*aD*e + e^2)*bD^2 + 2*(aC*aD*e - aC*e^2)*bC + 2*(aC*aD*e - aC*e^2 + (aD^2 - 2*aD*e + e^2)*bC)*bD + 2*(aC*aD*e + (aD^2 - aD*e)*bC + (aD^2 - aD*e)*bD)*sC - 2*(2*aC*aD^2*e - (2*e^2 + e)*aC*aD - aD^2*sC + (aD^2 - aD*e)*bC + (aD^2 - aD*e)*bD)*sD))/aD
+
+invD = -1/2*((aC - e)*bC - (aC - e)*bD + 2*aC*e - aD*e + aC*sC + aC*sD - sqrt(aD^2*e^2 + aC^2*sC^2 + aC^2*sD^2 + 2*(aC*e - e^2)*aD*bC + (aC^2 - 2*aC*e + e^2)*bC^2 + (aC^2 - 2*aC*e + e^2)*bD^2 + 2*((aC*e - e^2)*aD + (aC^2 - 2*aC*e + e^2)*bC)*bD - 2*((2*aC^2*e - (2*e^2 + e)*aC)*aD + (aC^2 - aC*e)*bC + (aC^2 - aC*e)*bD)*sC + 2*(aC*aD*e + aC^2*sC + (aC^2 - aC*e)*bC + (aC^2 - aC*e)*bD)*sD))/aC
+
+# Plot the eigenvalues
+quartz(height = 5, width = 6)
+par(mar = c(5,6,2,1))
+plot(TP, invD, type = "l", col = "darkred", ylim = range(invD,invC), xlab = "Temperature", ylab = "Per capita growth rate as invader",lwd = 1.5,cex.lab = 1.5, cex.axis = 1.25)
+lines(TP,invC, col = "darkblue",lwd = 1.5)
+abline(h = 0,lwd = 2)
+legend("topright",lty = 1, col = c("darkred","darkblue"), legend = c("Deciduous", "Coniferous"),bty = "n",lwd = 2)
+dev.copy2pdf(file = "Invasion_rate")
